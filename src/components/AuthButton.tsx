@@ -21,6 +21,16 @@ export default function AuthButton() {
           {session.user.name}
         </span>
         <button
+          onClick={() =>
+            signIn("google", undefined, {
+              prompt: "select_account",
+            })
+          }
+          className="rounded-lg bg-blue-500 px-3 py-1 text-xs font-medium text-white hover:bg-blue-600"
+        >
+          + 계정 추가
+        </button>
+        <button
           onClick={() => signOut()}
           className="rounded-lg border border-gray-200 px-3 py-1 text-xs text-gray-500 hover:bg-gray-50"
         >
