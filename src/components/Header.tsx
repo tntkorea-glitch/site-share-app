@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AuthButton from "./AuthButton";
 
 export default function Header() {
   return (
@@ -7,26 +8,23 @@ export default function Header() {
         <Link href="/" className="text-xl font-bold text-gray-900">
           📺 SiteShare
         </Link>
-        <nav className="flex gap-4">
-          <Link
-            href="/"
-            className="text-sm font-medium text-gray-600 hover:text-gray-900"
-          >
-            대시보드
-          </Link>
-          <Link
-            href="/manage"
-            className="text-sm font-medium text-gray-600 hover:text-gray-900"
-          >
-            채널 관리
-          </Link>
-          <Link
-            href="/manage/new"
-            className="rounded-lg bg-red-500 px-3 py-1 text-sm font-medium text-white hover:bg-red-600"
-          >
-            + 채널 추가
-          </Link>
-        </nav>
+        <div className="flex items-center gap-4">
+          <nav className="flex gap-3">
+            <Link
+              href="/"
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
+            >
+              대시보드
+            </Link>
+            <Link
+              href="/manage"
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
+            >
+              수동 관리
+            </Link>
+          </nav>
+          <AuthButton />
+        </div>
       </div>
     </header>
   );
