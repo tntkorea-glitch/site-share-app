@@ -1,2 +1,3 @@
-- [User Profile](user_profile.md) — 사용자 기본 프로필 및 작업 환경
+- [User Profile](user_profile.md) — 사용자 프로필, 유튜브 20계정/40채널 운영
 - [Project Init](project_init.md) — site-share-app 프로젝트 생성 정보
+- [Project Status](project_status.md) — 현재 상태 및 다음 세션 작업 목록
