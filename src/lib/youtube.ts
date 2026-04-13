@@ -182,6 +182,9 @@ export async function getChannelById(
   const viewCount = parseInt(stats.viewCount || "0");
   const videoCount = parseInt(stats.videoCount || "0");
 
+  // 외부 채널은 Analytics 접근 불가 → 추정치 사용
+  const watchHours = Math.round((viewCount * 2) / 60);
+
   return {
     id: item.id,
     title: item.snippet.title,
@@ -194,6 +197,6 @@ export async function getChannelById(
     viewCount,
     videoCount,
     publishedAt: item.snippet.publishedAt,
-    monetization: calcMonetization(subscriberCount, viewCount, videoCount),
+    monetization: calcMonetization(subscriberCount, watchHours),
   };
 }
