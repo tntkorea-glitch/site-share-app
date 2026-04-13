@@ -315,6 +315,41 @@ export default function Dashboard() {
         </div>
       )}
 
+      {/* 정렬/필터 */}
+      {allChannels.length > 0 && (
+        <div className="mb-6 flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-2">
+            <label className="text-sm text-gray-500">정렬</label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-700"
+            >
+              <option value="name">이름순</option>
+              <option value="subscribers">구독자순</option>
+              <option value="views">조회수순</option>
+              <option value="videos">영상수순</option>
+              <option value="monetization">수익화 진행률순</option>
+            </select>
+          </div>
+          <div className="flex items-center gap-2">
+            <label className="text-sm text-gray-500">필터</label>
+            <select
+              value={filterBy}
+              onChange={(e) => setFilterBy(e.target.value)}
+              className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-700"
+            >
+              <option value="all">전체</option>
+              <option value="monetized">수익화 달성</option>
+              <option value="not-monetized">수익화 미달성</option>
+            </select>
+          </div>
+          <span className="text-xs text-gray-400">
+            {filterChannels(allChannels).length}개 채널
+          </span>
+        </div>
+      )}
+
       {/* 채널 카드 - 계정별 그룹 */}
       {loading && allChannels.length === 0 ? (
         <div className="flex min-h-[30vh] items-center justify-center">
