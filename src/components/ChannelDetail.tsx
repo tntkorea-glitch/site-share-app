@@ -146,6 +146,57 @@ export default function ChannelDetail({
           </div>
         </div>
 
+        {/* 일별 통계 변화 */}
+        {statsHistory.length > 1 && (
+          <div className="border-b border-gray-100 p-6">
+            <h3 className="mb-3 text-sm font-semibold text-gray-900">
+              일별 통계 변화
+            </h3>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-100 text-xs text-gray-500">
+                    <th className="pb-2 text-left font-medium">날짜</th>
+                    <th className="pb-2 text-right font-medium">구독자</th>
+                    <th className="pb-2 text-right font-medium">변화</th>
+                    <th className="pb-2 text-right font-medium">총 조회수</th>
+                    <th className="pb-2 text-right font-medium">변화</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {statsHistory.slice(-7).reverse().map((stat, i, arr) => {
+                    const prev = arr[i + 1];
+                    const subDiff = prev ? stat.subscriberCount - prev.subscriberCount : 0;
+                    const viewDiff = prev ? stat.viewCount - prev.viewCount : 0;
+                    return (
+                      <tr key={stat.date} className="border-b border-gray-50">
+                        <td className="py-1.5 text-gray-600">{stat.date.slice(5)}</td>
+                        <td className="py-1.5 text-right text-gray-900">
+                          {formatNumber(stat.subscriberCount)}
+                        </td>
+                        <td className={`py-1.5 text-right text-xs ${subDiff > 0 ? "text-green-600" : subDiff < 0 ? "text-red-500" : "text-gray-400"}`}>
+                          {prev ? (subDiff > 0 ? `+${subDiff}` : subDiff === 0 ? "-" : subDiff) : ""}
+                        </td>
+                        <td className="py-1.5 text-right text-gray-900">
+                          {formatNumber(stat.viewCount)}
+                        </td>
+                        <td className={`py-1.5 text-right text-xs ${viewDiff > 0 ? "text-green-600" : viewDiff < 0 ? "text-red-500" : "text-gray-400"}`}>
+                          {prev ? (viewDiff > 0 ? `+${formatNumber(viewDiff)}` : viewDiff === 0 ? "-" : formatNumber(viewDiff)) : ""}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+            {statsHistory.length <= 1 && (
+              <p className="py-4 text-center text-xs text-gray-400">
+                2일 이상 데이터가 쌓이면 변화량이 표시됩니다
+              </p>
+            )}
+          </div>
+        )}
+
         {/* 최근 영상 */}
         <div className="p-6">
           <h3 className="mb-3 text-sm font-semibold text-gray-900">
