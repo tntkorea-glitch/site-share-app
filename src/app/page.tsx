@@ -60,7 +60,9 @@ export default function Dashboard() {
       );
 
       setAccounts(updated);
-      setAllChannels(updated.flatMap((a) => a.channels));
+      const all = updated.flatMap((a) => a.channels);
+      setAllChannels(all);
+      saveStatsSnapshot(all);
       setLastUpdated(new Date().toLocaleString("ko-KR"));
     } catch (e: any) {
       setError(e.message);
