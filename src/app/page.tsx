@@ -349,7 +349,7 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* 채널 카드 - 계정별 그룹 */}
+      {/* 채널 카드 */}
       {loading && allChannels.length === 0 ? (
         <div className="flex min-h-[30vh] items-center justify-center">
           <div className="text-gray-400">채널 정보를 가져오는 중...</div>
@@ -362,33 +362,14 @@ export default function Dashboard() {
           </p>
         </div>
       ) : (
-        <div className="space-y-8">
-          {accounts.map((acc) => {
-            const filtered = sortChannels(filterChannels(acc.channels));
-            if (filtered.length === 0) return null;
-            return (
-              <div key={acc.email}>
-                <div className="mb-3 flex items-center gap-2">
-                  <img src={acc.image} alt="" className="h-5 w-5 rounded-full" />
-                  <h2 className="text-sm font-semibold text-gray-700">
-                    {acc.name}
-                  </h2>
-                  <span className="text-xs text-gray-400">
-                    {acc.channels.length}개 채널
-                  </span>
-                </div>
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                  {filtered.map((ch) => (
-                    <ChannelStatsCard
-                      key={ch.id}
-                      channel={ch}
-                      onSelect={setSelectedChannel}
-                    />
-                  ))}
-                </div>
-              </div>
-            );
-          })}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {sortChannels(filterChannels(allChannels)).map((ch) => (
+            <ChannelStatsCard
+              key={ch.id}
+              channel={ch}
+              onSelect={setSelectedChannel}
+            />
+          ))}
         </div>
       )}
 
