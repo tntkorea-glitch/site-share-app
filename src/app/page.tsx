@@ -30,6 +30,8 @@ export default function Dashboard() {
     useState<YouTubeChannel | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [synced, setSynced] = useState(false);
+  const [sortBy, setSortBy] = useState<string>("name");
+  const [filterBy, setFilterBy] = useState<string>("all");
 
   // localStorage에서 기존 데이터 로드
   useEffect(() => {
