@@ -1,31 +1,61 @@
 import { YouTubeChannel, YouTubeVideo, MonetizationStatus } from "./types";
 
 const API_BASE = "https://www.googleapis.com/youtube/v3";
+const ANALYTICS_BASE = "https://youtubeanalytics.googleapis.com/v2";
 
 function calcMonetization(
   subscriberCount: number,
-  viewCount: number,
-  videoCount: number
+  watchHours: number
 ): MonetizationStatus {
-  // 시청시간 추정: 평균 조회당 2분 가정 → 시간 환산
-  const estimatedWatchHours = Math.round((viewCount * 2) / 60);
   const subscriberProgress = Math.min(
     100,
     Math.round((subscriberCount / 1000) * 100)
   );
   const watchHoursProgress = Math.min(
     100,
-    Math.round((estimatedWatchHours / 4000) * 100)
+    Math.round((watchHours / 4000) * 100)
   );
 
   return {
     subscribersMet: subscriberCount >= 1000,
-    watchHoursMet: estimatedWatchHours >= 4000,
+    watchHoursMet: watchHours >= 4000,
     subscriberCount,
-    estimatedWatchHours,
+    estimatedWatchHours: watchHours,
     subscriberProgress,
     watchHoursProgress,
   };
+}
+
+/** YouTube Analytics API로 최근 365일 실제 시청시간(시간) 조회 */
+export async function getWatchHours(
+  accessToken: string,
+  channelId: string
+): Promise<number> {
+  const endDate = new Date().toISOString().slice(0, 10);
+  const startDate = new Date(Date.now() - 365 * 86400000)
+    .toISOString()
+    .slice(0, 10);
+
+  try {
+    const res = await fetch(
+      `${ANALYTICS_BASE}/reports?ids=channel==${channelId}&startDate=${startDate}&endDate=${endDate}&metrics=estimatedMinutesWatched`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+
+    if (!res.ok) return -1; // 실패 시 -1 반환 (폴백용)
+
+    const data = await res.json();
+    // rows: [[minutesWatched]]
+    if (data.rows && data.rows.length > 0) {
+      const minutes = data.rows[0][0] || 0;
+      return Math.round(minutes / 60);
+    }
+    return 0;
+  } catch {
+    return -1;
+  }
 }
 
 export async function getMyChannels(
