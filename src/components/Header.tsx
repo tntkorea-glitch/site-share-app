@@ -17,6 +17,12 @@ export default function Header() {
               대시보드
             </Link>
             <Link
+              href="/guide"
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
+            >
+              수익화 가이드
+            </Link>
+            <Link
               href="/manage"
               className="text-sm font-medium text-gray-600 hover:text-gray-900"
             >
