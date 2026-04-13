@@ -77,27 +77,40 @@ export async function getMyChannels(
   const data = await res.json();
   if (!data.items || data.items.length === 0) return [];
 
-  return data.items.map((item: any) => {
-    const stats = item.statistics;
-    const subscriberCount = parseInt(stats.subscriberCount || "0");
-    const viewCount = parseInt(stats.viewCount || "0");
-    const videoCount = parseInt(stats.videoCount || "0");
+  // 모든 채널의 시청시간을 병렬로 조회
+  const channels = await Promise.all(
+    data.items.map(async (item: any) => {
+      const stats = item.statistics;
+      const subscriberCount = parseInt(stats.subscriberCount || "0");
+      const viewCount = parseInt(stats.viewCount || "0");
+      const videoCount = parseInt(stats.videoCount || "0");
 
-    return {
-      id: item.id,
-      title: item.snippet.title,
-      description: item.snippet.description,
-      thumbnailUrl:
-        item.snippet.thumbnails?.medium?.url ||
-        item.snippet.thumbnails?.default?.url ||
-        "",
-      subscriberCount,
-      viewCount,
-      videoCount,
-      publishedAt: item.snippet.publishedAt,
-      monetization: calcMonetization(subscriberCount, viewCount, videoCount),
-    } satisfies YouTubeChannel;
-  });
+      // Analytics API에서 실제 시청시간 가져오기
+      let watchHours = await getWatchHours(accessToken, item.id);
+
+      // Analytics 실패 시 추정치로 폴백
+      if (watchHours < 0) {
+        watchHours = Math.round((viewCount * 2) / 60);
+      }
+
+      return {
+        id: item.id,
+        title: item.snippet.title,
+        description: item.snippet.description,
+        thumbnailUrl:
+          item.snippet.thumbnails?.medium?.url ||
+          item.snippet.thumbnails?.default?.url ||
+          "",
+        subscriberCount,
+        viewCount,
+        videoCount,
+        publishedAt: item.snippet.publishedAt,
+        monetization: calcMonetization(subscriberCount, watchHours),
+      } satisfies YouTubeChannel;
+    })
+  );
+
+  return channels;
 }
 
 export async function getChannelVideos(
