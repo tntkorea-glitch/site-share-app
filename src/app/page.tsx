@@ -32,6 +32,7 @@ export default function Dashboard() {
   const [synced, setSynced] = useState(false);
   const [sortBy, setSortBy] = useState<string>("name");
   const [filterBy, setFilterBy] = useState<string>("all");
+  const [showAccounts, setShowAccounts] = useState(false);
 
   // localStorage에서 기존 데이터 로드
   useEffect(() => {
