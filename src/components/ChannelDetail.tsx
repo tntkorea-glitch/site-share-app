@@ -30,6 +30,7 @@ export default function ChannelDetail({
 }) {
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
   const [loading, setLoading] = useState(true);
+  const [statsHistory, setStatsHistory] = useState<ChannelStats[]>([]);
 
   useEffect(() => {
     fetch(`/api/youtube/videos?channelId=${channel.id}`)
@@ -37,6 +38,8 @@ export default function ChannelDetail({
       .then((data) => setVideos(data.videos || []))
       .catch(() => setVideos([]))
       .finally(() => setLoading(false));
+
+    setStatsHistory(getChannelStatsHistory(channel.id, 30));
   }, [channel.id]);
 
   const m = channel.monetization;
