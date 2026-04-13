@@ -1,4 +1,4 @@
-import { YouTubeChannel } from "./types";
+import { YouTubeChannel, ChannelStats, STATS_STORAGE_KEY } from "./types";
 
 const ACCOUNTS_KEY = "site-share-accounts";
 
