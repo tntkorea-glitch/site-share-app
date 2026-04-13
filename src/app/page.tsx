@@ -364,26 +364,30 @@ export default function Dashboard() {
         </div>
       ) : (
         <div className="space-y-8">
-          {accounts.map((acc) => (
-            <div key={acc.email}>
-              <div className="mb-3 flex items-center gap-2">
-                <img src={acc.image} alt="" className="h-5 w-5 rounded-full" />
-                <h2 className="text-sm font-semibold text-gray-700">
-                  {acc.name}
-                </h2>
-                <span className="text-xs text-gray-400">{acc.email}</span>
+          {accounts.map((acc) => {
+            const filtered = sortChannels(filterChannels(acc.channels));
+            if (filtered.length === 0) return null;
+            return (
+              <div key={acc.email}>
+                <div className="mb-3 flex items-center gap-2">
+                  <img src={acc.image} alt="" className="h-5 w-5 rounded-full" />
+                  <h2 className="text-sm font-semibold text-gray-700">
+                    {acc.name}
+                  </h2>
+                  <span className="text-xs text-gray-400">{acc.email}</span>
+                </div>
+                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                  {filtered.map((ch) => (
+                    <ChannelStatsCard
+                      key={ch.id}
+                      channel={ch}
+                      onSelect={setSelectedChannel}
+                    />
+                  ))}
+                </div>
               </div>
-              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {acc.channels.map((ch) => (
-                  <ChannelStatsCard
-                    key={ch.id}
-                    channel={ch}
-                    onSelect={setSelectedChannel}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
