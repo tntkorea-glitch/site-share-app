@@ -154,6 +154,43 @@ export default function Dashboard() {
     );
   }
 
+  // 정렬 함수
+  function sortChannels(channels: YouTubeChannel[]): YouTubeChannel[] {
+    const sorted = [...channels];
+    switch (sortBy) {
+      case "subscribers":
+        return sorted.sort((a, b) => b.subscriberCount - a.subscriberCount);
+      case "views":
+        return sorted.sort((a, b) => b.viewCount - a.viewCount);
+      case "videos":
+        return sorted.sort((a, b) => b.videoCount - a.videoCount);
+      case "monetization":
+        return sorted.sort(
+          (a, b) =>
+            (b.monetization.subscriberProgress + b.monetization.watchHoursProgress) -
+            (a.monetization.subscriberProgress + a.monetization.watchHoursProgress)
+        );
+      default:
+        return sorted.sort((a, b) => a.title.localeCompare(b.title));
+    }
+  }
+
+  // 필터 함수
+  function filterChannels(channels: YouTubeChannel[]): YouTubeChannel[] {
+    switch (filterBy) {
+      case "monetized":
+        return channels.filter(
+          (c) => c.monetization.subscribersMet && c.monetization.watchHoursMet
+        );
+      case "not-monetized":
+        return channels.filter(
+          (c) => !c.monetization.subscribersMet || !c.monetization.watchHoursMet
+        );
+      default:
+        return channels;
+    }
+  }
+
   // 요약 통계
   const totalSubs = allChannels.reduce((s, c) => s + c.subscriberCount, 0);
   const totalViews = allChannels.reduce((s, c) => s + c.viewCount, 0);
