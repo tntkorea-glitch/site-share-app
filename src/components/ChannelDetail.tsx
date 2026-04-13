@@ -107,7 +107,7 @@ export default function ChannelDetail({
             <p className="text-2xl font-bold text-gray-900">
               {formatNumber(m.estimatedWatchHours)}h
             </p>
-            <p className="text-xs text-gray-500">추정 시청시간</p>
+            <p className="text-xs text-gray-500">시청시간(12개월)</p>
           </div>
         </div>
 
