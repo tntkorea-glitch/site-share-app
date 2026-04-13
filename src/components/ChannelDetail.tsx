@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { YouTubeChannel, YouTubeVideo } from "@/lib/types";
+import { YouTubeChannel, YouTubeVideo, ChannelStats } from "@/lib/types";
+import { getChannelStatsHistory } from "@/lib/account-storage";
 import MonetizationBadge from "./MonetizationBadge";
 
 function formatNumber(n: number): string {
