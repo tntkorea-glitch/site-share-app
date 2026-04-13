@@ -263,7 +263,6 @@ export default function Dashboard() {
                   <p className="truncate text-sm font-medium text-gray-900">
                     {acc.name}
                   </p>
-                  <p className="truncate text-xs text-gray-400">{acc.email}</p>
                 </div>
                 <span className="ml-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
                   {acc.channels.length}채널
