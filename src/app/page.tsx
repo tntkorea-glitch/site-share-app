@@ -243,43 +243,56 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* 연결된 계정 목록 */}
+      {/* 연결된 계정 목록 (토글) */}
       {accounts.length > 0 && (
-        <div className="mb-6 rounded-xl border border-gray-200 bg-white p-4">
-          <h2 className="mb-3 text-sm font-semibold text-gray-700">
+        <div className="mb-6">
+          <button
+            onClick={() => setShowAccounts(!showAccounts)}
+            className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700"
+          >
+            <svg
+              className={`h-4 w-4 transition-transform ${showAccounts ? "rotate-90" : ""}`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
             연결된 계정 ({accounts.length}개)
-          </h2>
-          <div className="flex flex-wrap gap-3">
-            {accounts.map((acc) => (
-              <div
-                key={acc.email}
-                className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50 px-3 py-2"
-              >
-                <img
-                  src={acc.image}
-                  alt=""
-                  className="h-6 w-6 rounded-full"
-                />
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-medium text-gray-900">
-                    {acc.name}
-                  </p>
-                </div>
-                <span className="ml-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
-                  {acc.channels.length}채널
-                </span>
-                <button
-                  onClick={() => handleRemoveAccount(acc.email)}
-                  className="ml-1 text-gray-300 hover:text-red-500"
-                  title="계정 제거"
-                >
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+          </button>
+          {showAccounts && (
+            <div className="mt-3 rounded-xl border border-gray-200 bg-white p-4">
+              <div className="flex flex-wrap gap-2">
+                {accounts.map((acc) => (
+                  <div
+                    key={acc.email}
+                    className="flex items-center gap-1.5 rounded-full border border-gray-100 bg-gray-50 px-3 py-1.5"
+                  >
+                    <img
+                      src={acc.image}
+                      alt=""
+                      className="h-5 w-5 rounded-full"
+                    />
+                    <span className="text-xs font-medium text-gray-700">
+                      {acc.name}
+                    </span>
+                    <span className="text-xs text-gray-400">
+                      {acc.channels.length}ch
+                    </span>
+                    <button
+                      onClick={() => handleRemoveAccount(acc.email)}
+                      className="ml-0.5 text-gray-300 hover:text-red-500"
+                      title="계정 제거"
+                    >
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          )}
         </div>
       )}
 
