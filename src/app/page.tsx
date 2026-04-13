@@ -373,7 +373,9 @@ export default function Dashboard() {
                   <h2 className="text-sm font-semibold text-gray-700">
                     {acc.name}
                   </h2>
-                  <span className="text-xs text-gray-400">{acc.email}</span>
+                  <span className="text-xs text-gray-400">
+                    {acc.channels.length}개 채널
+                  </span>
                 </div>
                 <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                   {filtered.map((ch) => (
